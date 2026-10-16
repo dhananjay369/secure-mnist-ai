@@ -1,0 +1,49 @@
+Run started:2026-10-07 11:28:28.103469+00:00
+
+Test results:
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: ./security/sast_fixed.py:1:0
+1	import subprocess
+2	def run_demo(user_value):
+3	    return subprocess.run(['echo',user_value],shell=False,capture_output=True,text=True,check=True)
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: ./security/sast_fixed.py:3:11
+2	def run_demo(user_value):
+3	    return subprocess.run(['echo',user_value],shell=False,capture_output=True,text=True,check=True)
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: ./security/sast_fixed.py:3:11
+2	def run_demo(user_value):
+3	    return subprocess.run(['echo',user_value],shell=False,capture_output=True,text=True,check=True)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 3
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 3
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 3
+Files skipped (0):
