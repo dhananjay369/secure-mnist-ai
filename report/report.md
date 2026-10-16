@@ -1,7 +1,7 @@
 # Secure AI Systems – Red and Blue Teaming an MNIST Classifier
 
-**Team members:** ____________________ and ____________________  
-**GitHub repository:** ____________________  
+**Name:** DHANANJAY KUMAR (CS26MTECH13007) 
+**GitHub repository:** https://github.com/dhananjay369/secure-mnist-ai
 **Attack-code repository/folder:** ____________________
 
 ## 1. Introduction
