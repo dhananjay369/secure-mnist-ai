@@ -1,38 +1,34 @@
-**# Secure AI Systems: Red and Blue Teaming an MNIST Classifier**
+# Secure AI Systems: Red and Blue Teaming an MNIST Classifier
 
-**\*\*Name:\*\*** Dhananjay Kumar
+**Name:** Dhananjay Kumar
 
-**\*\*Roll Number:\*\*** CS26MTECH13007
+**Roll Number:** CS26MTECH13007
 
-\---
+---
 
-**## 1. GitHub Repository of CNN Implementation for Image Classification**
+## 1. GitHub Repository of CNN Implementation for Image Classification
 
 The CNN implementation for handwritten digit classification using the MNIST dataset is available in the following GitHub repository.
 
-**\*\*CNN Implementation Repository:\*\***
+**CNN Implementation Repository:**
 
 [https://github.com/dhananjay369/secure-mnist-ai](https://github.com/dhananjay369/secure-mnist-ai)
 
 The project uses a Convolutional Neural Network (CNN) to classify grayscale handwritten digit images into ten classes, from 0 to 9.
 
-**### Main Implementation Files**
+### Main Implementation Files
 
-\- `src/model.py` — CNN architecture and input validation.
-
-\- `src/train.py` — model training.
-
-\- `src/evaluate.py` — evaluation on the MNIST test dataset.
-
-\- `src/utils.py` — supporting utilities.
-
-\- `run_all.py` — project workflow.
+- `src/model.py` — CNN architecture and input validation.
+- `src/train.py` — model training.
+- `src/evaluate.py` — evaluation on the MNIST test dataset.
+- `src/utils.py` — supporting utilities.
+- `run_all.py` — project workflow.
 
 The CNN consists of two convolutional layers followed by ReLU activation and max-pooling operations. The extracted features are passed through fully connected layers to produce ten output logits, one for each digit class.
 
 The MNIST dataset is used for training and evaluation. Dataset files are not included in the repository; they must be downloaded or made available locally according to the project setup.
 
-**## 2. Performance Metrics of Classification**
+## 2. Performance Metrics of Classification
 
 The baseline CNN was evaluated on the clean MNIST test dataset.
 
@@ -48,29 +44,25 @@ The model achieved 98.82% classification accuracy on clean test data. This resul
 
 The inference time is specific to the recorded execution environment and may vary depending on hardware and system load.
 
-**## 3. Threat Model of the Implementation**
+## 3. Threat Model of the Implementation
 
-**### 3.1 System Overview**
+### 3.1 System Overview
 
 The system accepts handwritten digit images and uses a trained CNN to predict their corresponding digit classes.
 
 The main assets are:
 
-\- Training and test images.
+- Training and test images.
+- Training labels and their integrity.
+- Trained model parameters and saved model files.
+- Prediction accuracy and availability.
+- Experiment results and evaluation code.
 
-\- Training labels and their integrity.
-
-\- Trained model parameters and saved model files.
-
-\- Prediction accuracy and availability.
-
-\- Experiment results and evaluation code.
-
-**### 3.2 Attacker Model**
+### 3.2 Attacker Model
 
 This project considers two principal attack scenarios.
 
-**#### A. Adversarial Example Attacker**
+#### A. Adversarial Example Attacker
 
 The attacker modifies input images to cause the CNN to predict an incorrect class.
 
@@ -78,7 +70,7 @@ The Fast Gradient Sign Method (FGSM) is used to generate adversarial examples. T
 
 In this experimental setting, the attacker can use model gradients to construct perturbations. The attack demonstrates the potential effect of adversarial inputs on classification accuracy.
 
-**#### B. Data Poisoning Attacker**
+#### B. Data Poisoning Attacker
 
 The attacker modifies a portion of the training labels to influence model predictions.
 
@@ -88,7 +80,7 @@ The intended goal is to increase the number of genuine digit-7 images classified
 
 This is a label-flipping experiment. It should not be confused with a trigger-based backdoor attack.
 
-**### 3.3 STRIDE Threat Analysis**
+### 3.3 STRIDE Threat Analysis
 
 STRIDE is a threat-modeling framework used to identify six categories of security threats.
 
@@ -101,9 +93,9 @@ STRIDE is a threat-modeling framework used to identify six categories of securit
 | Denial of Service | Legitimate requests cannot be processed. | Repeated malformed inputs consume system resources. | Validate inputs and apply resource limits. |
 | Elevation of Privilege | An attacker obtains unauthorized permissions. | An insecure command-execution operation is exploited. | Avoid unsafe shell execution and follow least-privilege principles. |
 
-**### 3.4 LINDDUN Privacy Threat Analysis**
+### 3.4 LINDDUN Privacy Threat Analysis
 
-LINDDUN is a privacy threat-modeling framework. It identifies Linkability, Identifiability, Non-repudiation, Detectability, Disclosure of information, Unawareness, and Non-compliance.
+LINDDUN is a privacy threat-modeling framework. It identifies Linkability, Identifiability, Non-repudiation, Detectability, Disclosure of Information, Unawareness, and Non-compliance.
 
 | LINDDUN Category | Potential Privacy Threat | Possible Mitigation |
 |---|---|---|
@@ -117,19 +109,17 @@ LINDDUN is a privacy threat-modeling framework. It identifies Linkability, Ident
 
 The project uses the MNIST handwritten digit dataset. The privacy threats above are potential risks in an AI system and do not establish that personal information has actually been exposed in this experiment.
 
-**## 4. SAST Findings and Fixes**
+## 4. SAST Findings and Fixes
 
 Static Application Security Testing (SAST) was performed using Bandit to identify potentially insecure Python code patterns.
 
-**### 4.1 Tool Used**
+### 4.1 Tool Used
 
-\- Tool: Bandit
+- Tool: Bandit.
+- Scan command: `python -m bandit -r src attacks defense security`
+- Purpose: Identify potentially insecure Python operations and security weaknesses.
 
-\- Scan command: `python -m bandit -r src attacks defense security`
-
-\- Purpose: Identify potentially insecure Python operations and security weaknesses.
-
-**### 4.2 Findings**
+### 4.2 Findings
 
 The latest scan reported two findings in the intentionally vulnerable demonstration file, `security/sast_before.py`.
 
@@ -140,7 +130,7 @@ The latest scan reported two findings in the intentionally vulnerable demonstrat
 
 The High-severity finding relates to CWE-78, which concerns improper neutralization of special elements used in an OS command.
 
-**### 4.3 Fix Implemented**
+### 4.3 Fix Implemented
 
 The fixed demonstration in `security/sast_fixed.py` avoids shell execution and prints the supplied string directly.
 
@@ -156,31 +146,26 @@ The isolated Bandit scan of `security/sast_fixed.py` reported no issues.
 
 The intentionally vulnerable file is retained to demonstrate the original security problem. Therefore, the two findings in the full project scan refer to that demonstration file, not to the fixed function.
 
-**### 4.4 Input Validation**
+### 4.4 Input Validation
 
 The project also implements input validation in `defense/input_validation.py`.
 
 The validation checks include:
 
-\- Input must be a PyTorch tensor.
-
-\- Input shape must be `(N, 1, 28, 28)`.
-
-\- The batch must not be empty.
-
-\- Input values must use a floating-point data type.
-
-\- Input values must be finite; NaN and infinity are rejected.
-
-\- Pixel values must lie within the range `[0, 1]`.
+- Input must be a PyTorch tensor.
+- Input shape must be `(N, 1, 28, 28)`.
+- The batch must not be empty.
+- Input values must use a floating-point data type.
+- Input values must be finite; NaN and infinity are rejected.
+- Pixel values must lie within the range `[0, 1]`.
 
 The validation tests passed all eight recorded cases, including valid input, invalid shape, empty batch, NaN values, out-of-range values, integer input, and non-tensor input.
 
 Input validation prevents malformed data from entering the model. It does not prevent adversarial examples that satisfy all the validation rules.
 
-**## 5. GitHub Repository of Attack and Defense Implementation**
+## 5. GitHub Repository of Attack and Defense Implementation
 
-**\*\*Attack and Defense Repository:\*\***
+**Attack and Defense Repository:**
 
 [https://github.com/dhananjay369/secure-mnist-ai-attacks](https://github.com/dhananjay369/secure-mnist-ai-attacks)
 
@@ -188,25 +173,20 @@ This repository contains the attack and defense implementation used for the expe
 
 The project evaluates adversarial examples generated using FGSM, label-flipping data poisoning, input validation, and adversarial training.
 
-**### Main Experimental Components**
+### Main Experimental Components
 
-\- FGSM attack implementation.
-
-\- Data poisoning and poisoned-model training.
-
-\- Poisoning evaluation.
-
-\- Adversarial training defense.
-
-\- Baseline and defended model comparison.
-
-\- Input validation tests.
+- FGSM attack implementation.
+- Data poisoning and poisoned-model training.
+- Poisoning evaluation.
+- Adversarial training defense.
+- Baseline and defended model comparison.
+- Input validation tests.
 
 The experiments compare model accuracy on clean inputs, adversarial inputs, and data-poisoning scenarios.
 
-**## 6. Performance Metrics with Adversarial and Poisoned Data**
+## 6. Performance Metrics with Adversarial and Poisoned Data
 
-**### 6.1 FGSM Adversarial Attack**
+### 6.1 FGSM Adversarial Attack
 
 The FGSM attack generates adversarial images by perturbing input pixels using the gradient of the model loss.
 
@@ -223,7 +203,7 @@ The model's accuracy decreased substantially when evaluated on adversarial image
 
 The attack success rate is calculated over predictions that were correct before the attack. It is not the same as the overall prediction change rate.
 
-**### 6.2 Data Poisoning Attack**
+### 6.2 Data Poisoning Attack
 
 The poisoning experiment changes a portion of training labels to investigate whether the model's predictions are affected.
 
@@ -240,13 +220,13 @@ The poisoned model achieved 98.87% clean accuracy, compared with 98.82% for the 
 
 These results show a small change in the targeted misclassification count. They do not establish a strong or reliable targeted poisoning effect. Additional controlled experiments and repeated runs would be needed to determine the consistency of the effect.
 
-**## 7. Blue-Team Implementation and Comparison with Baseline**
+## 7. Blue-Team Implementation and Comparison with Baseline
 
 The blue team implements defensive techniques to improve the reliability of the CNN against malicious or malformed inputs.
 
 The main defenses are input validation and adversarial training.
 
-**### 7.1 Input Validation Defense**
+### 7.1 Input Validation Defense
 
 Input validation checks that incoming images have the expected tensor type, shape, data type, finite values, and pixel range.
 
@@ -254,7 +234,7 @@ The validation tests passed all eight recorded test cases.
 
 This defense helps reject malformed inputs before model inference. However, a valid-range adversarial image can still pass these checks.
 
-**### 7.2 Adversarial Training Defense**
+### 7.2 Adversarial Training Defense
 
 Adversarial training exposes the model to adversarial examples during training. The objective is to improve its ability to classify perturbed inputs correctly.
 
@@ -267,19 +247,15 @@ The following results were obtained using the same clean and adversarial evaluat
 | Clean accuracy | 98.82% | 98.25% |
 | FGSM adversarial accuracy | 50.23% | 96.51% |
 
-**### 7.3 Comparison and Observations**
+### 7.3 Comparison and Observations
 
-\- Clean accuracy decreased by approximately 0.57 percentage points after adversarial training.
+- Clean accuracy decreased by approximately 0.57 percentage points after adversarial training.
+- FGSM adversarial accuracy increased from 50.23% to 96.51%.
+- The improvement in FGSM adversarial accuracy was 46.28 percentage points.
+- The results indicate that adversarial training substantially improved robustness against the tested FGSM attack at epsilon = 0.2.
+- These results do not guarantee robustness against all adversarial attacks, perturbation strengths, or distribution shifts.
 
-\- FGSM adversarial accuracy increased from 50.23% to 96.51%.
-
-\- The improvement in FGSM adversarial accuracy was 46.28 percentage points.
-
-\- The results indicate that adversarial training substantially improved robustness against the tested FGSM attack at epsilon = 0.2.
-
-\- These results do not guarantee robustness against all adversarial attacks, perturbation strengths, or distribution shifts.
-
-**### 7.4 Baseline Versus Blue-Team Summary**
+### 7.4 Baseline Versus Blue-Team Summary
 
 | Evaluation Aspect | Baseline | Blue Team |
 |---|---|---|
@@ -290,7 +266,7 @@ The following results were obtained using the same clean and adversarial evaluat
 
 The experiments show that defensive techniques can improve robustness, but the effectiveness of each defense must be measured against clearly defined attack conditions.
 
-**## 8. Conclusion and Observations**
+## 8. Conclusion and Observations
 
 This project evaluated the security of a CNN-based MNIST digit classifier through red-team attacks and blue-team defenses.
 
@@ -305,4 +281,3 @@ SAST identified an unsafe shell-execution pattern in the intentionally vulnerabl
 Overall, the experiments demonstrate that clean-data accuracy alone is insufficient to establish the security of an AI system. A more secure implementation should combine input validation, secure coding practices, dataset-integrity controls, adversarial evaluation, and ongoing testing against multiple attack types.
 
 The results are limited to the tested MNIST dataset, model, attack configurations, and experimental environment. They should not be interpreted as proof of complete robustness or security.
-
