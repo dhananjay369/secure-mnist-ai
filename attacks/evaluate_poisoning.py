@@ -1,9 +1,10 @@
+
 import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 from src.model import MNISTCNN, load_weights
-from src.utils import device
+from src.utils import device, save_json
 
 dev = device()
 
@@ -66,6 +67,21 @@ for name, model in models.items():
         "actual_seven_samples": actual_seven
     }
 
+comparison = {
+    "baseline": results["Baseline"],
+    "poisoned": results["Poisoned"],
+    "clean_accuracy_change_percentage_points": (
+        results["Poisoned"]["clean_accuracy"]
+        - results["Baseline"]["clean_accuracy"]
+    ) * 100,
+    "class_7_accuracy_change_percentage_points": (
+        results["Poisoned"]["class_7_accuracy"]
+        - results["Baseline"]["class_7_accuracy"]
+    ) * 100
+}
+
+save_json(comparison, "results/poisoning_evaluation.json")
+
 print("\nTargeted Data Poisoning Evaluation")
 print("----------------------------------")
 
@@ -75,13 +91,9 @@ for name, metrics in results.items():
         print(f"{metric}: {value}")
 
 print("\nChange in clean accuracy (percentage points):")
-print(
-    (results["Poisoned"]["clean_accuracy"]
-     - results["Baseline"]["clean_accuracy"]) * 100
-)
+print(comparison["clean_accuracy_change_percentage_points"])
 
 print("\nChange in class 7 accuracy (percentage points):")
-print(
-    (results["Poisoned"]["class_7_accuracy"]
-     - results["Baseline"]["class_7_accuracy"]) * 100
-)
+print(comparison["class_7_accuracy_change_percentage_points"])
+
+print("\nSaved: results/poisoning_evaluation.json")

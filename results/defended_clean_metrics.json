@@ -1,8 +1,8 @@
 {
   "loss": 0.050000530056655404,
   "accuracy": 0.9825,
-  "inference_time_seconds": 0.9280078748706728,
-  "milliseconds_per_image": 0.09280078748706728,
+  "inference_time_seconds": 2.452585249906406,
+  "milliseconds_per_image": 0.24525852499064058,
   "confusion_matrix": [
     [
       976,
